@@ -1,5 +1,5 @@
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ChatService } from './services/chat/chat.service';
+import { ChatService } from './services/chat.service';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 
 @Component({
