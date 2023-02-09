@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -13,6 +14,7 @@ export class SigninComponent implements OnInit, AfterViewInit {
 	public isSubmit: boolean = false;
 	constructor(
 		public authService: AuthService,
+		private router: Router,
 	) {
 
 	}
@@ -40,12 +42,21 @@ export class SigninComponent implements OnInit, AfterViewInit {
 			this.authService.sighIn(this.formGroup.get('username')?.value, this.formGroup.get('password')?.value)
 				.subscribe(
 					data => {
-						if (data && data.status == 200) {
-							console.log(data);
-
+						if (data.error == false) {
+							//console.log(data);
+							if (data == null) {
+								alert("Username or Password is incorrect !");
+								this.isSubmit = false;
+							} else {
+								this.router.navigateByUrl('chats');
+							}
 						} else {
 							this.isSubmit = false;
 						}
+					},
+					error => {
+						this.isSubmit = false;
+						alert("Something went wrong, please try again");
 					}
 				)
 

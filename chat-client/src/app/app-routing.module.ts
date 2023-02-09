@@ -7,7 +7,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-	{ path: '', redirectTo: 'sighin', pathMatch: 'full' },
+	{ path: '', redirectTo: 'signin', pathMatch: 'full' },
 	{ path: 'signin', component: SigninComponent },
 	{ path: 'signup', component: SignupComponent },
 	{ path: 'chats', component: ChatsComponent, canActivate: [AuthGuardGuard] },

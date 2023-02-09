@@ -20,29 +20,30 @@ var dbConn = mysql.createConnection({
 	user: 'root',
 	password: '',
 	database: 'webchat',
-	port: 9999
 });
 
 dbConn.connect();
 // End connect DB	
 
 // Start API
+// sign in
 app.post("/signin", function (req, res) {
 	dbConn.query('SELECT * FROM user_account where username = ? and password = ?', [req.body.username, req.body.password], function (error, results, fields) {
 		if (error) {
-			throw error;
+			return res.send({ error: true, data: results, message: error.message });
 		}
-		return res.send({ error: false, data: results, message: 'sign in success' });
+		let returnData = null;
+
+		if (results.length > 0) {
+			returnData = {
+				username: results[0].username,
+				publicKeyUser: results[0].password
+			}
+		}
+		
+		return res.send({ error: false, data: returnData, message: 'success' });
 	});
 });
-
-app.post('/users', function (req, res) {
-	dbConn.query('SELECT * FROM users', function (error, results, fields) {
-		if (error) throw error;
-		return res.send({ error: false, data: results, message: 'users list.' });
-	});
-});
-
 
 app.use((err, req, res, next) => {
 	const statusCode = err.statusCode || 500;

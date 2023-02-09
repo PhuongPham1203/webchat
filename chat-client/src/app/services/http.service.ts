@@ -6,11 +6,13 @@ import { Injectable } from '@angular/core';
 })
 export class HttpService {
 
-	private host = "localhost:3000/";
+	private host = "http://localhost:3000/";
 
 	constructor(private http: HttpClient) { }
 
 	public post(url: string, data: any) {
+		const headers = { 'content-type': 'application/json' }
+		const body = JSON.stringify(data);
 		return this.http.post<any>(this.host + url, data);
 	}
 
