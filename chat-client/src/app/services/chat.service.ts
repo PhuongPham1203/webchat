@@ -13,7 +13,7 @@ export class ChatService {
 	public message$: BehaviorSubject<MessageChat> = new BehaviorSubject<MessageChat>(<MessageChat>{});
 
 	private socket: Socket;
-	private url = 'localhost:3000';
+	private url = 'https://boxboxlux-server.herokuapp.com/';
 
 	constructor(
 		private http: HttpService,
