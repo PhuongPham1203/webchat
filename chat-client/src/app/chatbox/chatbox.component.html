@@ -1,0 +1,88 @@
+<div class="chats">
+	<div class="chat-body">
+
+		<!-- Chat Header Start-->
+		<div class="chat-header">
+
+			<!-- Chat participant's Name -->
+			<div class="media chat-name align-items-center text-truncate">
+				<div class="avatar  d-none d-sm-inline-block mr-3">
+					<img [src]="friend?.avataUrl ? friend?.avataUrl : './../../assets/images/user_profile/3.svg'"
+						alt="">
+				</div>
+
+				<div class="media-body align-self-center ">
+					<h6 class="text-truncate mb-0">{{friend?.name}}</h6>
+				</div>
+			</div>
+
+		</div>
+		<!-- Chat Header End-->
+
+		<!-- Chat Content Start-->
+		<div class="chat-content p-2" id="messageBody">
+			<div class="container">
+
+				<ng-container *ngFor="let item of messageList">
+					<ng-container
+						*ngIf="item.userId1 == authService.getUser()?.id; then selfMessage else friendMessage">
+					</ng-container>
+					<ng-template #selfMessage>
+						<!-- Self Message Start -->
+						<div class="message self">
+							<div class="message-wrapper">
+								<div class="message-content">
+									<span>{{item.message}}</span>
+								</div>
+							</div>
+							<div class="message-options">
+								<div class="avatar avatar-sm"><img alt=""
+										[src]="item?.avataUrl ? item?.avataUrl : './../../assets/images/user_profile/3.svg'">
+								</div>
+								<span class="message-date">{{item.timeCreate | date : 'shortTime'}}</span>
+							</div>
+						</div>
+						<!-- Self Message End -->
+					</ng-template>
+
+					<ng-template #friendMessage>
+						<!-- Received Message Start -->
+						<div class="message">
+							<div class="message-wrapper">
+								<div style="background-color: #E4E6EB" class="message-content">
+									<span style="color: #050505;">{{item.message}}</span>
+								</div>
+							</div>
+							<div class="message-options">
+								<div class="avatar avatar-sm"><img alt=""
+										[src]="item?.avataUrl ? item?.avataUrl : './../../assets/images/user_profile/3.svg'">
+								</div>
+								<span class="message-date">{{item.timeCreate | date : 'shortTime'}}</span>
+							</div>
+						</div>
+						<!-- Received Message End -->
+					</ng-template>
+				</ng-container>
+
+			</div>
+
+			<!-- Scroll to finish -->
+			<div #chatFinished class="chat-finished" id="chatFinished"></div>
+		</div>
+		<!-- Chat Content End-->
+
+		<!-- Chat Footer Start-->
+		<div class="chat-footer">
+			<form class="mb-3" (ngSubmit)="sendMessage()" [formGroup]="formGroup">
+				<input maxlength="50" class="form-control emojionearea-form-control" id="messageInput" rows="1"
+					formControlName="messageInput" placeholder="Type your message here...">
+				<div class="btn btn-primary btn-icon send-icon rounded-circle text-light mb-1" role="button">
+					<button [disabled]="formGroup.invalid" class="btn btn-primary " type="submit"><i
+							class="fa-solid fa-arrow-right"></i></button>
+				</div>
+			</form>
+		</div>
+		<!-- Chat Footer End-->
+	</div>
+
+</div>

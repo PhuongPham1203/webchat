@@ -1,0 +1,66 @@
+<!-- Main Layout Start -->
+<div class="main-layout">
+
+	<app-left-bar></app-left-bar>
+
+	<!-- Sidebar Start -->
+	<aside class="sidebar">
+		<!-- Tab Content Start -->
+		<div class="tab-content">
+			<!-- Chat Tab Content Start -->
+			<div class="tab-pane active" id="chats-content">
+				<div class="d-flex flex-column h-100">
+					<div class="hide-scrollbar h-100" id="chatContactsList">
+
+						<!-- Chat Header Start -->
+						<div class="sidebar-header sticky-top p-2">
+
+							<div class="d-flex justify-content-between align-items-center">
+								<!-- Chat Tab Pane Title Start -->
+								<h5 class="font-weight-semibold mb-0">Hello : {{authService.getUser()?.name}}</h5>
+								<!-- Chat Tab Pane Title End -->
+
+
+							</div>
+
+						</div>
+						<!-- Chat Header End -->
+
+						<!-- Chat Contact List Start -->
+						<ul class="contacts-list" id="chatContactTab" data-chat-list="">
+
+							<ng-container *ngFor="let item of listAllFriendChat">
+								<app-friend-chat
+									[id]="item.userId1 == authService.getUser()?.id! ? item.userId2 : item.userId1"
+									(chatWithFriend)="chatWithFriend($event)">
+								</app-friend-chat>
+							</ng-container>
+
+						</ul>
+					</div>
+				</div>
+			</div>
+			<!-- Chats Tab Content End -->
+
+
+		</div>
+		<!-- Tab Content End -->
+	</aside>
+	<!-- Sidebar End -->
+
+	<!-- Main Start -->
+	<main class="main main-visible" style="display: block;">
+
+		<!-- Chats Page Start -->
+		<app-chatbox #chatbox [hidden]="idFriendChat == ''" [idFriend]="idFriendChat"></app-chatbox>
+		<!-- Chats Page End -->
+
+	</main>
+	<!-- Main End -->
+
+</div>
+<!-- Main Layout End -->
+
+<script>
+	
+</script>
