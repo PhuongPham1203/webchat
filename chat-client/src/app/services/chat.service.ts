@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { BehaviorSubject, Observable, Subscriber } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
-import { MessageChat } from '../models/chat.model';
+import { MessageChat, RoomSetting } from '../models/chat.model';
 import { HttpService } from './http.service';
 
 @Injectable({
@@ -11,6 +11,7 @@ import { HttpService } from './http.service';
 export class ChatService {
 
 	public message$: BehaviorSubject<MessageChat> = new BehaviorSubject<MessageChat>(<MessageChat>{});
+	private settingRoom!: RoomSetting;
 
 	private socket: Socket;
 	private url = 'https://boxboxlux-server.herokuapp.com/';
@@ -54,6 +55,14 @@ export class ChatService {
 
 	public getPublicKeyOfFriend(id1: string = '', id2: string = '') {
 		return this.http.post('getpublickey', { id1: id1, id2: id2 });
+	}
+
+	public getSettingRoom(){
+		return this.settingRoom;
+	}
+
+	public setSettingRoom(setting: RoomSetting){
+		this.settingRoom = setting;
 	}
 
 }

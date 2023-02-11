@@ -24,7 +24,7 @@ export class ChatboxComponent implements OnInit, AfterViewInit {
 
 	public friend: FriendChat | null = null;
 
-	public settingRoom!: RoomSetting;
+	//public settingRoom!: RoomSetting;
 
 	public messageList: MessageChat[] = [];
 
@@ -57,6 +57,8 @@ export class ChatboxComponent implements OnInit, AfterViewInit {
 	}
 
 	reloadPage(id: string = "") {
+
+		this.messageList = [];
 
 		if (this.subGetNewMessage) {
 			this.subGetNewMessage.unsubscribe();
@@ -102,13 +104,13 @@ export class ChatboxComponent implements OnInit, AfterViewInit {
 
 								key = shajs('sha256').update(key).digest('hex');
 
-								this.settingRoom = {
+								this.chatService.setSettingRoom({
 									userId1: res.data.userId1,
 									userId2: res.data.userId2,
 									roomId: res.data.roomId,
 									publicKey: res.data.publicKey,
 									commonKey: key
-								}
+								});
 
 								//console.log(this.settingRoom.commonKey);
 
@@ -119,7 +121,7 @@ export class ChatboxComponent implements OnInit, AfterViewInit {
 											if (res.data) {
 												let listChat : MessageChat[] = res.data;
 												listChat.forEach(element => {
-													let decryptedMessage = CryptoJS.AES.decrypt(element.message, this.settingRoom.commonKey).toString(CryptoJS.enc.Utf8);
+													let decryptedMessage = CryptoJS.AES.decrypt(element.message, this.chatService.getSettingRoom().commonKey).toString(CryptoJS.enc.Utf8);
 													element.message = decryptedMessage;
 												});
 
@@ -145,7 +147,7 @@ export class ChatboxComponent implements OnInit, AfterViewInit {
 							//console.log(data);
 							if (data && (Object.keys(data).length != 0)) {
 								//console.log(this.settingRoom.commonKey);
-								data.message = CryptoJS.AES.decrypt(data.message, this.settingRoom.commonKey).toString(CryptoJS.enc.Utf8);
+								data.message = CryptoJS.AES.decrypt(data.message, this.chatService.getSettingRoom().commonKey).toString(CryptoJS.enc.Utf8);
 								if (!this.messageList.includes(data)) {
 									this.messageList.push(data);
 									setTimeout(() => {
@@ -169,7 +171,7 @@ export class ChatboxComponent implements OnInit, AfterViewInit {
 	sendMessage() {
 		if (this.formGroup.valid) {
 			//console.log(this.settingRoom.commonKey);
-			let encryptedMessage = CryptoJS.AES.encrypt(this.formGroup.get("messageInput").value, this.settingRoom.commonKey).toString();
+			let encryptedMessage = CryptoJS.AES.encrypt(this.formGroup.get("messageInput").value, this.chatService.getSettingRoom().commonKey).toString();
 
 			let mess: MessageChat = {
 				userId1: this.authService.getUser()?.id + "",
