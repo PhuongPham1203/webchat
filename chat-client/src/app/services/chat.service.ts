@@ -1,38 +1,47 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subscriber } from 'rxjs';
+import { CookieService } from 'ngx-cookie-service';
+import { BehaviorSubject, Observable, Subscriber } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
+import { MessageChat } from '../models/chat.model';
+import { HttpService } from './http.service';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class ChatService {
 
+	public message$: BehaviorSubject<MessageChat> = new BehaviorSubject<MessageChat>(<MessageChat>{});
+
 	private socket: Socket;
 	private url = 'localhost:3000';
 
-	constructor() {
-		this.socket = io(this.url, {transports: ['websocket', 'pulling', 'flashsocket']});
+	constructor(
+		private http: HttpService,
+		private cookieService: CookieService
+	) {
+		this.socket = io(this.url, { transports: ['websocket', 'pulling', 'flashsocket'] });
 	}
 
 	joinRoom(data: any): void {
 		this.socket.emit('join', data);
 	}
 
-	sendMessage(data: any) {
-		this.socket.emit('message', data);
+	public sendMessage(message: MessageChat) {
+		this.socket.emit('message', message);
 	}
 
-	getMessage(): Observable<any> {
-		return new Observable<{ user: string, message: string }>(observer => {
-			this.socket.on('new message', (data) => {
-				observer.next(data);
-			});
+	public getListMessage(id1: string = '', id2: string = '') {
+		return this.http.post('getlistchat', { id1: id1, id2: id2 })
+	}
 
-			return () => {
-				this.socket.disconnect();
-			}
+	public getNewMessage = () => {
+		this.socket.on('newMessage', (message) => {
+			//console.log(message);
+			this.message$.next(message);
 		});
-	}
+
+		return this.message$.asObservable();
+	};
 
 	getStorage() {
 		let storage = localStorage.getItem('chats');
@@ -42,4 +51,9 @@ export class ChatService {
 	setStorage(data: any) {
 		localStorage.setItem('chats', data);
 	}
+
+	public getPublicKeyOfFriend(id1: string = '', id2: string = '') {
+		return this.http.post('getpublickey', { id1: id1, id2: id2 });
+	}
+
 }

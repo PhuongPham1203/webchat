@@ -1,0 +1,22 @@
+<!-- friends Item Start -->
+<li class="contacts-item">
+	<a class="contacts-link">
+		<div class="avatar">
+			<img [src]="friend?.avataUrl ? friend?.avataUrl : './../../assets/images/user_profile/3.svg'"
+				alt="">
+		</div>
+		<div class="contacts-content">
+			<div class="contacts-info">
+				<h6 class="chat-name text-truncate">{{friend?.name}}</h6>
+			</div>
+		</div>
+		<button *ngIf="!isAccept && authService.getUser()?.id == userId2" class="btn btn-success" (click)="acceptFriend()">
+			<i class="fa-solid fa-check-double"></i>
+		</button>
+		<span *ngIf="!isAccept && authService.getUser()?.id != userId2" class="text-success">
+			<i class="fa-solid fa-person-walking-dashed-line-arrow-right"></i>
+		</span>
+	</a>
+
+</li>
+<!-- friends Item End -->

@@ -1,0 +1,16 @@
+<!-- friends Item Start -->
+<li class="contacts-item">
+	<a class="contacts-link" (click)="joinChatWithFriend()">
+		<div class="avatar">
+			<img [src]="friend?.avataUrl ? friend?.avataUrl : './../../assets/images/user_profile/3.svg'"
+				alt="">
+		</div>
+		<div class="contacts-content">
+			<div class="contacts-info">
+				<h6 class="chat-name text-truncate">{{friend?.name}}</h6>
+			</div>
+		</div>
+	</a>
+
+</li>
+<!-- friends Item End -->

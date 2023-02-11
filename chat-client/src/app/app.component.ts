@@ -80,6 +80,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 	}
 
 	ngOnInit(): void {
+		/*
 		this.chatService.getMessage()
 			.subscribe((data: { user: string, room: string, message: string }) => {
 				// this.messageArray.push(data);
@@ -92,6 +93,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 					}, 500);
 				}
 			});
+			*/
 	}
 
 	ngAfterViewInit(): void {
@@ -134,12 +136,13 @@ export class AppComponent implements OnInit, AfterViewInit {
 	}
 
 	sendMessage(): void {
+		/*
 		this.chatService.sendMessage({
 			user: this.currentUser.name,
 			room: this.roomId,
 			message: this.messageText
 		});
-
+		*/
 		this.storageArray = this.chatService.getStorage();
 		const storeIndex = this.storageArray
 			.findIndex((storage) => storage.roomId === this.roomId);

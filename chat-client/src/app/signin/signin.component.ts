@@ -1,6 +1,8 @@
+import { UserSignIn } from './../models/user.model';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -15,6 +17,7 @@ export class SigninComponent implements OnInit, AfterViewInit {
 	constructor(
 		public authService: AuthService,
 		private router: Router,
+		private cookieService: CookieService
 	) {
 
 	}
@@ -32,9 +35,29 @@ export class SigninComponent implements OnInit, AfterViewInit {
 	}
 
 	ngAfterViewInit(): void {
+		if (this.cookieService.check('token')) {
+			this.authService.sighInWithToken(this.cookieService.get('token'))
+				.subscribe(
+					data => {
+						if (data.error == false) {
+							//console.log(data);
+							if (data.data != null) {
+								let user: UserSignIn = {
+									id:data.data.id,
+									username: data.data.username,
+									name: data.data.name,
+									privateKey: data.data.privateKey,
+									token: data.data.token,
+									avataUrl: data.data.avataUrl
+								}
+								this.authService.setUser(user);
+								this.router.navigateByUrl('chats');
+							}
+						}
+					}
+				);
+		}
 	}
-
-
 
 	signIn() {
 		if (this.formGroup.valid) {
@@ -44,11 +67,24 @@ export class SigninComponent implements OnInit, AfterViewInit {
 					data => {
 						if (data.error == false) {
 							//console.log(data);
-							if (data == null) {
+							if (data.data == null) {
 								alert("Username or Password is incorrect !");
 								this.isSubmit = false;
 							} else {
+
+								let user: UserSignIn = {
+									id:data.data.id,
+									username: data.data.username,
+									name: data.data.name,
+									privateKey: data.data.privateKey,
+									token: data.data.token,
+									avataUrl: data.data.avataUrl
+								}
+
+								this.cookieService.set('token', data.data.token, 60);
+								this.authService.setUser(user);
 								this.router.navigateByUrl('chats');
+
 							}
 						} else {
 							this.isSubmit = false;
@@ -58,7 +94,7 @@ export class SigninComponent implements OnInit, AfterViewInit {
 						this.isSubmit = false;
 						alert("Something went wrong, please try again");
 					}
-				)
+				);
 
 		}
 

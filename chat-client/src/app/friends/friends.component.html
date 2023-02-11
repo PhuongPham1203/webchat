@@ -1,0 +1,115 @@
+<div class="main-layout">
+
+	<app-left-bar></app-left-bar>
+
+	<!-- Friends Tab Content Start -->
+	<div class="tab-pane" id="friends-content">
+		<div class="d-flex flex-column h-100">
+			<div class="hide-scrollbar" id="friendsList">
+				<!-- Chat Header Start -->
+				<div class="sidebar-header sticky-top p-2">
+
+					<div class="d-flex justify-content-between align-items-center">
+						<!-- Chat Tab Pane Title Start -->
+						<h5 class="font-weight-semibold mb-0">Friends</h5>
+						<!-- Chat Tab Pane Title End -->
+
+						<ul class="nav flex-nowrap">
+
+							<li class="nav-item list-inline-item mr-1">
+
+							</li>
+
+							<li class="nav-item list-inline-item mr-0">
+
+							</li>
+						</ul>
+					</div>
+
+
+					<!-- Sidebar Header Start -->
+					<div class="sidebar-sub-header">
+						<!-- Sidebar Header Dropdown Start -->
+						<div class="dropdown mr-2">
+							<button class="btn btn-outline-default " type="button" data-chat-filter-list=""
+								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Search User
+							</button>
+						</div>
+						<!-- Sidebar Header Dropdown End -->
+
+						<!-- Sidebar Search Start -->
+						<form class="form-inline" [formGroup]="formGroup" (ngSubmit)="searchUsername()">
+							<div class="input-group">
+								<input type="text" class="form-control search border-right-0 transparent-bg pr-0"
+									placeholder="Enter Username" formControlName="username"
+									(change)="onChangeSearchUser()">
+								<div class="input-group-append">
+									<button [disabled]="formGroup.invalid" class="btn btn-primary btn-block"
+										type="submit">
+										<svg class="text-muted hw-20" fill="none" viewBox="0 0 24 24"
+											stroke="currentColor">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+												d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+										</svg>
+									</button>
+								</div>
+							</div>
+						</form>
+						<!-- Sidebar Search End -->
+					</div>
+					<!-- Sidebar Header End -->
+				</div>
+				<!-- Chat Header End -->
+
+				<!-- Friends Contact List Start -->
+				<ul class="contacts-list" id="friendsTab" data-friends-list="">
+
+					<ng-container *ngIf="searchResult;then searchResultTemplate else listFriend"></ng-container>
+
+					<ng-template #searchResultTemplate>
+						<!-- Item Series Start -->
+						<li>
+							<small class="font-weight-medium text-uppercase text-muted">Search Result</small>
+						</li>
+						<!-- Item Series End -->
+
+						<!-- friends Item Start -->
+						<li class="contacts-item">
+							<a class="contacts-link">
+								<div class="avatar">
+									<img [src]="searchResult?.avataUrl ? searchResult?.avataUrl : './../../assets/images/user_profile/3.svg'"
+										alt="">
+								</div>
+								<div class="contacts-content">
+									<div class="contacts-info">
+										<h6 class="chat-name text-truncate">{{searchResult?.name}}</h6>
+									</div>
+								</div>
+								<button class="btn btn-success" (click)="addFriend()"><i
+										class="fa-solid fa-user-plus"></i></button>
+							</a>
+
+						</li>
+						<!-- friends Item End -->
+					</ng-template>
+
+					<ng-template #listFriend>
+						<ng-container *ngFor="let item of listAllFriend">
+							<app-item-friend
+								[id]="this.authService.getUser()?.id! == item.userId1 ? item.userId2 : item.userId1" 
+								[isAccept]="item.isAcceptFriend == 1"
+								[userId2]="item.userId2"
+								(reloadListFriend)="getListFriend()">
+							</app-item-friend>
+						</ng-container>
+					</ng-template>
+
+				</ul>
+				<!-- Friends Contact List End -->
+			</div>
+		</div>
+	</div>
+	<!-- Friends Tab Content End -->
+</div>
+<!-- Main Layout End -->

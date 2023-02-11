@@ -11,6 +11,13 @@ import { SignupComponent } from './signup/signup.component';
 import { ChatsComponent } from './chats/chats.component';
 import { LeftBarComponent } from './left-bar/left-bar.component';
 import { SigninComponent } from './signin/signin.component';
+import { CookieService } from 'ngx-cookie-service';
+import { SignoutComponent } from './signout/signout.component';
+import { AuthService } from './services/auth.service';
+import { FriendsComponent } from './friends/friends.component';
+import { ItemFriendComponent } from './item-friend/item-friend.component';
+import { FriendChatComponent } from './friend-chat/friend-chat.component';
+import { ChatboxComponent } from './chatbox/chatbox.component';
 
 @NgModule({
 	declarations: [
@@ -20,6 +27,11 @@ import { SigninComponent } from './signin/signin.component';
 		PageNotFoundComponent,
 		LeftBarComponent,
 		SigninComponent,
+		SignoutComponent,
+  FriendsComponent,
+  ItemFriendComponent,
+  FriendChatComponent,
+  ChatboxComponent,
 	],
 	imports: [
 		BrowserModule,
@@ -28,9 +40,9 @@ import { SigninComponent } from './signin/signin.component';
 		FormsModule,
 		NgbModule,
 		ReactiveFormsModule,
-		
+
 	],
-	providers: [],
+	providers: [CookieService, AuthService],
 	bootstrap: [AppComponent]
 })
 export class AppModule { }
