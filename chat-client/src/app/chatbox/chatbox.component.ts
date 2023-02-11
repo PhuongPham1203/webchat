@@ -157,10 +157,6 @@ export class ChatboxComponent implements OnInit, AfterViewInit {
 
 						});
 
-
-
-
-
 				}
 			}
 		);

@@ -6,7 +6,9 @@ import { Injectable } from '@angular/core';
 })
 export class HttpService {
 
-	private host = "http://localhost:3000/";
+	//private host = "http://localhost:3000/";
+	private host = "https://boxboxlux-server.herokuapp.com/";
+	
 
 	constructor(private http: HttpClient) { }
 
